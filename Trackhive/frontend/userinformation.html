@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>User Management</title>
+        <style>
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            th,
+            td {
+                border: 1px solid #ccc;
+                padding: 8px;
+                text-align: left;
+            }
+
+            .btn {
+                padding: 5px 10px;
+                cursor: pointer;
+                margin-right: 5px;
+            }
+
+            .add-btn {
+                background: #28a745;
+                color: white;
+            }
+
+            .save-btn {
+                background: #007bff;
+                color: white;
+            }
+
+            .delete-btn {
+                background: #dc3545;
+                color: white;
+            }
+
+            .inline-msg {
+                color: #999;
+                font-size: 0.85em;
+                margin: 2px 0 0;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <h2>User Management</h2>
+        <button class="btn add-btn" id="addUserBtn">+ Add User</button>
+
+        <table id="userTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <p id="resultMsg"></p>
+
+        <script>
+            let users = [];
+            let addingNew = false;
+
+            // Fetch users
+            async function fetchUsers() {
+                const res = await fetch("user_api.php?action=fetch");
+                const data = await res.json();
+                if (data.success) {
+                    users = data.users;
+                    renderUsers();
+                }
+            }
+
+            // Render user table
+            function renderUsers() {
+                const tbody = document.querySelector("#userTable tbody");
+                tbody.innerHTML = "";
+
+                users.forEach((user, idx) => {
+                    const tr = document.createElement("tr");
+
+                    // 🔹 Hide ID during add — show after save
+                    tr.innerHTML = `
+      <td>
+        ${(addingNew && idx === users.length - 1)
+                            ? `<span style="color: gray; font-style: italic;">Auto</span>`
+                            : `<span>${user.id || ""}</span>`
+                        }
+      </td>
+      <td><input type="text" value="${user.username || ""}" data-field="username"></td>
+      <td><input type="email" value="${user.email || ""}" data-field="email"></td>
+      <td>
+        <select data-field="role">
+          <option value="user" ${user.role === "User" ? "selected" : ""}>User</option>
+          <option value="admin" ${user.role === "Admin" ? "selected" : ""}>Admin</option>
+        </select>
+      </td>
+      <td>${user.created || "-"}</td>
+      <td>
+        ${(addingNew && idx === users.length - 1)
+                            ? `<button class="btn save-btn" onclick="saveUser(${idx})">Save</button>`
+                            : `<button class="btn delete-btn" onclick="deleteUser(${user.id})">Delete</button>`
+                        }
+      </td>
+    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            // Add user
+            document.getElementById("addUserBtn").addEventListener("click", () => {
+                addingNew = true;
+                users.push({ username: "", email: "", role: "User" });
+                renderUsers();
+            });
+
+            // Save user
+            async function saveUser(idx) {
+                const row = document.querySelectorAll("#userTable tbody tr")[idx];
+                const username = row.querySelector('[data-field="username"]').value.trim();
+                const email = row.querySelector('[data-field="email"]').value.trim();
+                const role = row.querySelector('[data-field="role"]').value;
+
+                const formData = new FormData();
+                formData.append("action", "add");
+                formData.append("username", username);
+                formData.append("email", email);
+                formData.append("role", role);
+                formData.append("password", "changeme");
+
+                const res = await fetch("user_api.php", { method: "POST", body: formData });
+                const data = await res.json();
+
+                if (data.success) {
+                    document.getElementById("resultMsg").innerHTML =
+                        `✅ User added successfully! (User ID: ${data.user.id})`;
+
+                    addingNew = false;
+                    setTimeout(fetchUsers, 800);
+                } else {
+                    document.getElementById("resultMsg").innerHTML =
+                        "❌ Error: " + JSON.stringify(data.errors);
+                }
+            }
+
+            // Delete user
+            async function deleteUser(id) {
+                if (!confirm("Delete this user?")) return;
+                const formData = new FormData();
+                formData.append("action", "delete");
+                formData.append("id", id);
+
+                const res = await fetch("user_api.php", { method: "POST", body: formData });
+                const data = await res.json();
+                if (data.success) fetchUsers();
+                else alert(data.error);
+            }
+
+            // Load on start
+            fetchUsers();
+        </script>
+    </body>
+
+</html>

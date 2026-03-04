@@ -1,0 +1,91 @@
+        :root {
+            --primary: #0b3b6f;
+            --accent: #f4b400;
+            --bg: #f3f7fd;
+            --card: #ffffff;
+            --text: #0f1724;
+            --muted: #64748b;
+            --border: #dbe7fb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: var(--bg); color: var(--text); padding: 24px; }
+
+        .gateway {
+            width: min(780px, 100%);
+            margin: 0 auto;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            box-shadow: 0 16px 30px rgba(11, 59, 111, 0.14);
+            overflow: hidden;
+        }
+
+        .gateway-head {
+            background: linear-gradient(135deg, #0b3b6f 0%, #08273f 100%);
+            color: #fff;
+            padding: 18px 20px;
+        }
+
+        .gateway-head h1 { font-size: 24px; margin-bottom: 4px; }
+        .gateway-head p { color: rgba(255, 255, 255, 0.86); }
+
+        .gateway-body { padding: 20px; display: grid; gap: 14px; }
+
+        .row {
+            border: 1px solid var(--border);
+            border-left: 4px solid #1d4ed8;
+            border-radius: 10px;
+            padding: 10px 12px;
+            background: #fcfdff;
+        }
+
+        .label {
+            display: block;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #1d4ed8;
+            letter-spacing: .03em;
+            margin-bottom: 2px;
+        }
+
+        .value {
+            color: #102242;
+            word-break: break-word;
+        }
+
+        .paybar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 4px;
+            padding-top: 10px;
+            border-top: 1px dashed #cbd5e1;
+            flex-wrap: wrap;
+        }
+
+        .amount {
+            font-size: 22px;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .pay-btn {
+            border: 0;
+            border-radius: 8px;
+            background: var(--accent);
+            color: #102242;
+            padding: 11px 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 2px;
+        }
+    

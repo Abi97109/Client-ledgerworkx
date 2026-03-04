@@ -1,0 +1,45 @@
+.portal-breadcrumb {
+    margin: 12px 0 16px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #64748b;
+}
+
+.portal-breadcrumb a {
+    color: #1d4ed8;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.portal-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.portal-breadcrumb .crumb-sep {
+    color: #94a3b8;
+}
+
+.portal-breadcrumb .current {
+    color: #334155;
+    font-weight: 600;
+}
+
+html.dark-mode .portal-breadcrumb {
+    color: #9fb2c8;
+}
+
+html.dark-mode .portal-breadcrumb a {
+    color: #93c5fd;
+}
+
+html.dark-mode .portal-breadcrumb .crumb-sep {
+    color: #64748b;
+}
+
+html.dark-mode .portal-breadcrumb .current {
+    color: #e2e8f0;
+}

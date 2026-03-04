@@ -1,0 +1,144 @@
+        :root {
+            --primary: #0b3b6f;
+            --accent: #f4b400;
+            --text: #0f1724;
+            --muted: #64748b;
+            --border: #dbe7fb;
+            --card: #ffffff;
+            --bg: #eef3fa;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            padding: 24px;
+        }
+
+        .toolbar {
+            max-width: 900px;
+            margin: 0 auto 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toolbar a,
+        .toolbar button {
+            border: 0;
+            background: var(--primary);
+            color: #fff;
+            padding: 10px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .toolbar button {
+            background: var(--accent);
+            color: #08273f;
+        }
+
+        .invoice-sheet {
+            background: var(--card);
+            max-width: 900px;
+            margin: 0 auto;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            box-shadow: 0 14px 28px rgba(11, 59, 111, 0.12);
+            padding: 28px;
+        }
+
+        .head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid #e7edf8;
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+        }
+
+        .title {
+            font-size: 30px;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .meta {
+            color: var(--muted);
+            line-height: 1.7;
+            text-align: right;
+            font-size: 14px;
+        }
+
+        .meta strong {
+            color: #1e293b;
+        }
+
+        .section-title {
+            font-size: 14px;
+            color: var(--muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+        }
+
+        .block {
+            margin-bottom: 18px;
+        }
+
+        .amount-box {
+            margin-top: 18px;
+            border: 1px solid #d4e4ff;
+            border-radius: 8px;
+            background: #f6faff;
+            padding: 14px;
+            display: grid;
+            gap: 6px;
+        }
+
+        .amount-box .label {
+            color: #475569;
+            font-size: 13px;
+        }
+
+        .amount-box .value {
+            color: var(--primary);
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .footer-note {
+            margin-top: 24px;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        @media print {
+            body {
+                background: #fff;
+                padding: 0;
+            }
+
+            .toolbar {
+                display: none;
+            }
+
+            .invoice-sheet {
+                border: 0;
+                box-shadow: none;
+                border-radius: 0;
+                max-width: none;
+                margin: 0;
+                padding: 0;
+            }
+        }
+    

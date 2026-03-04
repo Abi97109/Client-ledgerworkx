@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrackHive | Smart Classrooms</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="favicon.ico">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #f7f9fb;
+      color: #222;
+      overflow-x: hidden;
+    }
+
+    
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 60px;
+      background: #243B55;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+      animation: slideDown 0.8s ease-out;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: slideInLeft 1s ease-out;
+    }
+
+    .logo img {
+      height: 60px;
+      width: auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: logoGlow 3s ease-in-out infinite;
+    }
+
+    .logo img:hover {
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+    }
+
+    .logo span {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+    }
+
+    .logo:hover span {
+      transform: translateX(5px);
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+
+    nav {
+      animation: slideInRight 1s ease-out 0.2s both;
+    }
+
+    nav a {
+      margin: 0 15px;
+      text-decoration: none;
+      color: #f1f1f1;
+      font-weight: 500;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      padding: 8px 0;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      width: 0%;
+      height: 2px;
+      bottom: -4px;
+      left: 50%;
+      background: linear-gradient(90deg, #3b82f6, #60a5fa);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+
+    nav a:hover {
+      color: #ffffff;
+      transform: translateY(-2px);
+      text-shadow: 0 4px 8px rgba(255, 255, 255, 0.3);
+    }
+
+    nav a:hover::after {
+      width: 100%;
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.6);
+    }
+
+   
+    .hero {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 20px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #ffffff, #f1f3f6 50%, #dbe2eb);
+      min-height: 100vh;
+    }
+
+   
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, #3b82f6 0%, rgba(59, 130, 246, 0.3) 70%);
+      border-radius: 50%;
+      top: -250px;
+      left: -200px;
+      opacity: 0.3;
+      animation: float 8s infinite ease-in-out;
+      z-index: 0;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, #6b7280 0%, rgba(107, 114, 128, 0.3) 70%);
+      border-radius: 50%;
+      bottom: -200px;
+      right: -150px;
+      opacity: 0.5;
+      animation: float 10s infinite ease-in-out reverse;
+      z-index: 0;
+    }
+
+  
+    .floating-shapes {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .shape {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.3;
+    }
+
+    .shape1 {
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(45deg, #3b82f6, #60a5fa);
+      top: 20%;
+      left: 10%;
+      animation: floatRotate 12s infinite ease-in-out;
+    }
+
+    .shape2 {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(45deg, #8b5cf6, #a78bfa);
+      top: 60%;
+      right: 15%;
+      animation: floatBounce 15s infinite ease-in-out 2s;
+    }
+
+    .shape3 {
+      width: 200px;
+      height: 200px;
+      background: linear-gradient(45deg, #10b981, #34d399);
+      bottom: 30%;
+      left: 5%;
+      animation: morphFloat 18s infinite ease-in-out 1s;
+      border-radius: 30% 70% 70% 30%;
+    }
+
+    .shape4 {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(45deg, #f59e0b, #fbbf24);
+      top: 30%;
+      right: 25%;
+      animation: pulse 4s infinite ease-in-out;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      position: relative;
+      z-index: 1;
+      color: #1f2a36;
+      opacity: 0.3;
+      animation: fadeInUp 1.2s ease 0.5s forwards;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: textGlow 3s ease-in-out infinite;
+      position: relative;
+    }
+
+    .hero h1 span::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      opacity: 0;
+      animation: sparkle 2s ease-in-out infinite;
+      z-index: -1;
+      border-radius: 4px;
+    }
+
+    .hero p {
+      font-size: 1.3rem;
+      margin-bottom: 40px;
+      opacity: 0;
+      position: relative;
+      z-index: 1;
+      color: #374151;
+      animation: fadeInUp 1.2s ease 0.8s forwards;
+      max-width: 600px;
+      line-height: 1.6;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    .btn {
+      padding: 16px 40px;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(135deg, #243B55, #1e3a52);
+      color: #fff;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeInUp 1.2s ease 1.1s forwards, buttonPulse 3s ease-in-out 2s infinite;
+      box-shadow: 0 8px 25px rgba(36, 59, 85, 0.3);
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn:hover {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 15px 35px rgba(59, 130, 246, 0.4);
+    }
+
+    .btn:active {
+      transform: translateY(-1px) scale(1.02);
+    }
+
+    
+    .scroll-indicator {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+      opacity: 0;
+      animation: fadeIn 1s ease 2s forwards;
+    }
+
+   
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      font-size: 0.95rem;
+      background: linear-gradient(135deg, #1f2937, #111827);
+      color: #d1d5db;
+      position: relative;
+      overflow: hidden;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+      animation: shimmer 3s ease-in-out infinite;
+    }
+
+    
+    @keyframes slideDown {
+      from { 
+        opacity: 0; 
+        transform: translateY(-100%); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      }
+    }
+
+    @keyframes slideInLeft {
+      from { 
+        opacity: 0; 
+        transform: translateX(-50px); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateX(0); 
+      }
+    }
+
+    @keyframes slideInRight {
+      from { 
+        opacity: 0; 
+        transform: translateX(50px); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateX(0); 
+      }
+    }
+
+    @keyframes fadeInUp {
+      from { 
+        opacity: 0; 
+        transform: translateY(40px); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes float {
+      0%, 100% { 
+        transform: translateY(0) scale(1); 
+      }
+      50% { 
+        transform: translateY(-80px) scale(1.1); 
+      }
+    }
+
+    @keyframes floatRotate {
+      0%, 100% { 
+        transform: translateY(0) rotate(0deg); 
+      }
+      33% { 
+        transform: translateY(-30px) rotate(120deg); 
+      }
+      66% { 
+        transform: translateY(20px) rotate(240deg); 
+      }
+    }
+
+    @keyframes floatBounce {
+      0%, 100% { 
+        transform: translateY(0) scale(1); 
+      }
+      25% { 
+        transform: translateY(-40px) scale(1.2); 
+      }
+      50% { 
+        transform: translateY(10px) scale(0.8); 
+      }
+      75% { 
+        transform: translateY(-20px) scale(1.1); 
+      }
+    }
+
+    @keyframes morphFloat {
+      0%, 100% { 
+        transform: translateY(0) rotate(0deg); 
+        border-radius: 30% 70% 70% 30%; 
+      }
+      25% { 
+        transform: translateY(-50px) rotate(90deg); 
+        border-radius: 70% 30% 30% 70%; 
+      }
+      50% { 
+        transform: translateY(20px) rotate(180deg); 
+        border-radius: 50% 50% 50% 50%; 
+      }
+      75% { 
+        transform: translateY(-30px) rotate(270deg); 
+        border-radius: 40% 60% 40% 60%; 
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% { 
+        transform: scale(1); 
+        opacity: 0.08; 
+      }
+      50% { 
+        transform: scale(1.3); 
+        opacity: 0.15; 
+      }
+    }
+
+    @keyframes logoGlow {
+      0%, 100% { 
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
+      }
+      50% { 
+        box-shadow: 0 4px 25px rgba(59, 130, 246, 0.3); 
+      }
+    }
+
+    @keyframes textGlow {
+      0%, 100% { 
+        filter: brightness(1); 
+      }
+      50% { 
+        filter: brightness(1.2) drop-shadow(0 0 10px rgba(59, 130, 246, 0.3)); 
+      }
+    }
+
+    @keyframes sparkle {
+      0%, 100% { 
+        opacity: 0; 
+        transform: scale(0.8); 
+      }
+      50% { 
+        opacity: 0.1; 
+        transform: scale(1.1); 
+      }
+    }
+
+    @keyframes buttonPulse {
+      0%, 100% { 
+        box-shadow: 0 8px 25px rgba(36, 59, 85, 0.3); 
+      }
+      50% { 
+        box-shadow: 0 8px 35px rgba(36, 59, 85, 0.5); 
+      }
+    }
+
+    @keyframes bounce {
+      0%, 100% { 
+        transform: translateX(-50%) translateY(0); 
+      }
+      50% { 
+        transform: translateX(-50%) translateY(-10px); 
+      }
+    }
+
+    @keyframes shimmer {
+      0% { 
+        left: -100%; 
+      }
+      100% { 
+        left: 100%; 
+      }
+    }
+
+    
+    @media (max-width: 768px) {
+      header {
+        padding: 15px 30px;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      nav {
+        animation: fadeIn 1s ease 0.5s both;
+      }
+
+      nav a {
+        margin: 0 10px;
+        font-size: 0.9rem;
+      }
+
+      .hero {
+        padding: 100px 20px;
+      }
+
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero p {
+        font-size: 1.1rem;
+      }
+
+      .btn {
+        padding: 14px 30px;
+        font-size: 1rem;
+      }
+
+      .shape1, .shape2, .shape3 {
+        display: none;
+      }
+    }
+
+    
+    .logo, nav a, .btn {
+      cursor: pointer;
+    }
+
+   
+    html {
+      scroll-behavior: smooth;
+    }
+
+    
+    .btn:focus, nav a:focus {
+      outline: 2px solid #3b82f6;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+
+ 
+  <header>
+    <div class="logo">
+      <img src="logotrackhive.jpg" alt="TrackHive Logo">
+      <a href="openinghomepg.html" style="text-decoration:none; color:#fff; font-weight:700; font-size:1.3rem;">TrackHive</a>
+    </div>
+    <nav>
+      <a href="openinghomepg.html">Home</a>
+      <a href="About.html">About</a>
+      <a href="contactus.html">Contact</a>
+    </nav>
+  </header>
+
+  
+  <section class="hero">
+   
+    <div class="floating-shapes">
+      <div class="shape shape1"></div>
+      <div class="shape shape2"></div>
+      <div class="shape shape3"></div>
+      <div class="shape shape4"></div>
+    </div>
+
+    <h1>Welcome to <span>TrackHive</span></h1>
+    <p>Track, Monitor, Save-The Future of Smart Classrooms</p>
+    <a href="signinup.html" class="btn">Get Started Today</a>
+
+   
+    <div class="scroll-indicator">
+    </div>
+  </section>
+
+
+  <footer>
+    © 2025 TrackHive. All Rights Reserved.
+    <br>
+    <small style="opacity: 0.7; margin-top: 5px; display: inline-block;">Building the future of smart education, one classroom at a time.</small>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>TrackHive | Login / Signup</title>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/png" href="favicon.ico">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: 'Poppins', sans-serif;
+            }
+
+            body {
+                background: #f7f9fb;
+                color: #222;
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+                overflow-x: hidden;
+                position: relative;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            header,
+            .container,
+            footer {
+                animation: fadeIn 1s ease forwards;
+            }
+
+            header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 18px 60px;
+                background: #243B55;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+                position: sticky;
+                top: 0;
+                z-index: 200;
+                backdrop-filter: blur(10px);
+            }
+
+            .logo {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .logo img {
+                height: 50px;
+                width: auto;
+                border-radius: 8px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            }
+
+            nav a {
+                margin: 0 15px;
+                text-decoration: none;
+                color: #f1f1f1;
+                font-weight: 500;
+                position: relative;
+                padding: 8px 0;
+                transition: 0.3s;
+            }
+
+            nav a:hover {
+                color: #ffffff;
+                transform: translateY(-2px);
+            }
+
+            .floating-shapes {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 0;
+            }
+
+            .shape {
+                position: absolute;
+                border-radius: 50%;
+                opacity: 0.3;
+            }
+
+            .shape1 {
+                width: 120px;
+                height: 120px;
+                background: linear-gradient(45deg, #3b82f6, #60a5fa);
+                top: 20%;
+                left: 10%;
+                animation: floatRotate 12s infinite ease-in-out;
+            }
+
+            .shape2 {
+                width: 80px;
+                height: 80px;
+                background: linear-gradient(45deg, #8b5cf6, #a78bfa);
+                top: 60%;
+                right: 15%;
+                animation: floatBounce 15s infinite ease-in-out 2s;
+            }
+
+            .shape3 {
+                width: 200px;
+                height: 200px;
+                background: linear-gradient(45deg, #10b981, #34d399);
+                bottom: 30%;
+                left: 5%;
+                animation: morphFloat 18s infinite ease-in-out 1s;
+                border-radius: 30% 70% 70% 30%;
+            }
+
+            .shape4 {
+                width: 80px;
+                height: 80px;
+                background: linear-gradient(45deg, #f59e0b, #fbbf24);
+                top: 30%;
+                right: 5%;
+                animation: pulse 4s infinite ease-in-out;
+            }
+
+            .page-container {
+                flex: 1;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+                z-index: 1;
+                padding: 40px 20px;
+            }
+
+            .container {
+                position: relative;
+                width: 880px;
+                height: 520px;
+                background: #fff;
+                border-radius: 30px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+                overflow: hidden;
+            }
+
+            .form-container {
+                position: absolute;
+                top: 0;
+                height: 100%;
+                transition: all 0.6s ease-in-out;
+            }
+
+            .sign-in-container {
+                left: 0;
+                width: 50%;
+                z-index: 2;
+            }
+
+            .sign-up-container {
+                left: 0;
+                width: 50%;
+                opacity: 0;
+                z-index: 1;
+            }
+
+            .container.right-panel-active .sign-in-container {
+                transform: translateX(100%);
+            }
+
+            .container.right-panel-active .sign-up-container {
+                transform: translateX(100%);
+                opacity: 1;
+                z-index: 5;
+                transition: all 0.6s ease-in-out;
+            }
+
+            form {
+                background: #fff;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 0 50px;
+                height: 100%;
+                text-align: center;
+            }
+
+            form input {
+                background: #f0f0f0;
+                border: none;
+                padding: 12px 15px;
+                margin: 8px 0;
+                width: 100%;
+                border-radius: 10px;
+            }
+
+            button {
+                border-radius: 25px;
+                border: none;
+                padding: 12px 45px;
+                margin-top: 15px;
+                background-color: #243B55;
+                color: #fff;
+                font-size: 14px;
+                font-weight: bold;
+                cursor: pointer;
+                transition: transform 0.2s, background-color 0.3s;
+            }
+
+            button:hover {
+                transform: scale(1.05);
+                background-color: #3b82f6;
+            }
+
+            /* Ghost buttons for overlay */
+            button.ghost {
+                background-color: transparent;
+                border: 2px solid #fff;
+                color: #fff;
+            }
+
+            button.ghost:hover {
+                background-color: #fff;
+                color: #243B55;
+                transform: scale(1.05);
+            }
+
+            .overlay-container {
+                position: absolute;
+                top: 0;
+                left: 50%;
+                width: 50%;
+                height: 100%;
+                overflow: hidden;
+                transition: transform 0.6s ease-in-out;
+                z-index: 100;
+            }
+
+            .container.right-panel-active .overlay-container {
+                transform: translateX(-100%);
+            }
+
+            .overlay {
+                background: linear-gradient(135deg, #3b82f6, #1e3a52);
+                color: #fff;
+                position: relative;
+                left: -100%;
+                height: 100%;
+                width: 200%;
+                transform: translateX(0);
+                transition: transform 0.6s ease-in-out;
+            }
+
+            .container.right-panel-active .overlay {
+                transform: translateX(50%);
+            }
+
+            .overlay-panel {
+                position: absolute;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 0 40px;
+                text-align: center;
+                top: 0;
+                height: 100%;
+                width: 50%;
+                transition: transform 0.6s ease-in-out;
+            }
+
+            .overlay-left {
+                transform: translateX(-20%);
+                left: 0;
+            }
+
+            .overlay-right {
+                right: 0;
+                transform: translateX(0);
+            }
+
+            .container.right-panel-active .overlay-left {
+                transform: translateX(0);
+            }
+
+            .container.right-panel-active .overlay-right {
+                transform: translateX(20%);
+            }
+
+            h1 {
+                font-size: 26px;
+                margin-bottom: 10px;
+            }
+
+            h2 {
+                font-size: 20px;
+                margin-bottom: 20px;
+                color: #243B55;
+            }
+
+            .title {
+                font-size: 32px;
+                font-weight: bold;
+                margin-bottom: 20px;
+                color: #3b82f6;
+            }
+
+            p {
+                font-size: 14px;
+                margin: 20px 0;
+            }
+
+            footer {
+                text-align: center;
+                padding: 30px 20px;
+                background: linear-gradient(135deg, #1f2937, #111827);
+                color: #d1d5db;
+                margin-top: auto;
+                position: relative;
+                z-index: 1;
+            }
+
+            footer small {
+                opacity: 0.7;
+                margin-top: 5px;
+                display: inline-block;
+            }
+
+            /* Password / login error styles */
+            input.error {
+                border: 2px solid red !important;
+            }
+
+            .error-message {
+                color: red;
+                font-size: 12px;
+                margin-top: 4px;
+                text-align: left;
+                display: none;
+            }
+
+            /* Animations */
+            @keyframes floatRotate {
+
+                0%,
+                100% {
+                    transform: translateY(0) rotate(0deg);
+                }
+
+                33% {
+                    transform: translateY(-30px) rotate(120deg);
+                }
+
+                66% {
+                    transform: translateY(20px) rotate(240deg);
+                }
+            }
+
+            @keyframes floatBounce {
+
+                0%,
+                100% {
+                    transform: translateY(0) scale(1);
+                }
+
+                25% {
+                    transform: translateY(-40px) scale(1.2);
+                }
+
+                50% {
+                    transform: translateY(10px) scale(0.8);
+                }
+
+                75% {
+                    transform: translateY(-20px) scale(1.1);
+                }
+            }
+
+            @keyframes morphFloat {
+
+                0%,
+                100% {
+                    transform: translateY(0) rotate(0deg);
+                    border-radius: 30% 70% 70% 30%;
+                }
+
+                25% {
+                    transform: translateY(-50px) rotate(90deg);
+                    border-radius: 70% 30% 30% 70%;
+                }
+
+                50% {
+                    transform: translateY(20px) rotate(180deg);
+                    border-radius: 50% 50% 50% 50%;
+                }
+
+                75% {
+                    transform: translateY(-30px) rotate(270deg);
+                    border-radius: 40% 60% 40% 60%;
+                }
+            }
+
+            @keyframes pulse {
+
+                0%,
+                100% {
+                    transform: scale(1);
+                    opacity: 0.08;
+                }
+
+                50% {
+                    transform: scale(1.3);
+                    opacity: 0.15;
+                }
+            }
+
+            /* Responsive */
+            @media (max-width: 900px) {
+                .container {
+                    width: 90%;
+                    height: auto;
+                    border-radius: 20px;
+                }
+
+                .overlay-container {
+                    display: none;
+                }
+
+                .form-container {
+                    width: 100%;
+                    position: relative;
+                    transform: none !important;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <header>
+            <div class="logo">
+                <img src="logotrackhive.jpg" alt="TrackHive Logo">
+                <a href="openinghomepg.html"
+                    style="text-decoration:none; color:#fff; font-weight:700; font-size:1.3rem;">TrackHive</a>
+            </div>
+            <nav>
+                <a href="openinghomepg.html">Home</a>
+                <a href="About.html">About</a>
+                <a href="contactus.html">Contact</a>
+            </nav>
+        </header>
+
+        <div class="floating-shapes">
+            <div class="shape shape1"></div>
+            <div class="shape shape2"></div>
+            <div class="shape shape3"></div>
+            <div class="shape shape4"></div>
+        </div>
+
+        <div class="page-container">
+            <div class="container" id="container">
+                <!-- Sign Up -->
+                <div class="form-container sign-up-container">
+                    <form action="../backend/sign_up.php" method="POST">
+                        <h1 class="title">TrackHive</h1>
+                        <h2>Create Account</h2>
+                        <input type="text" name="username" placeholder="Name" required />
+                        <input type="email" name="email" placeholder="Email" required />
+                        <input type="password" name="password" placeholder="Password" required />
+                        <input type="password" name="retype_password" placeholder="Retype Password" required />
+                        <button type="submit">Sign Up</button>
+                    </form>
+                </div>
+
+                <!-- Sign In -->
+                <div class="form-container sign-in-container">
+                    <form id="loginForm" method="post">
+                        <h1>Sign In</h1>
+                        <input type="email" name="email" placeholder="Email" required />
+                        <input type="password" name="password" placeholder="Password" required />
+                        <a href="forgotpassword.html" id="forgotLink">Forgot your password?</a>
+                        <button type="submit">Sign In</button>
+                    </form>
+
+                </div>
+
+                <!-- Overlay -->
+                <div class="overlay-container">
+                    <div class="overlay">
+                        <div class="overlay-panel overlay-left">
+                            <h1>Welcome Back!</h1>
+                            <p>Enter your personal details to use all of TrackHive's features</p>
+                            <button class="ghost" id="signIn">Sign In</button>
+                        </div>
+                        <div class="overlay-panel overlay-right">
+                            <h1>Welcome to TrackHive!</h1>
+                            <p>Don't have an account?</p>
+                            <p>Register with your organization details to register</p>
+                            <button class="ghost" id="signUp">Sign Up</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            © 2025 TrackHive. All Rights Reserved.
+            <br>
+            <small>Building the future of smart education, one classroom at a time.</small>
+        </footer>
+
+        <!-- Keep everything above unchanged, and replace your current <script> with this updated version -->
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const container = document.getElementById('container');
+                const signUpButton = document.getElementById('signUp');
+                const signInButton = document.getElementById('signIn');
+
+                // Toggle panels
+                signUpButton.addEventListener('click', () => container.classList.add("right-panel-active"));
+                signInButton.addEventListener('click', () => container.classList.remove("right-panel-active"));
+
+                /* ---------------------- SIGNUP FORM ---------------------- */
+                const signupForm = document.querySelector('form[action="../backend/sign_up.php"]');
+                if (signupForm) {
+
+                    const usernameInput = signupForm.querySelector('input[name="username"]');
+                    const emailInput = signupForm.querySelector('input[name="email"]');
+                    const passwordInput = signupForm.querySelector('input[name="password"]');
+                    const retypeInput = signupForm.querySelector('input[name="retype_password"]');
+
+                    // Username validation function
+                    function isValidUsername(username) {
+                        const trimmed = username.trim();
+                        const hasLetter = /[A-Za-z]/.test(trimmed);
+                        const hasValidChars = /^[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/? ]+$/.test(trimmed);
+                        return trimmed.length > 0 && hasLetter && hasValidChars;
+                    }
+
+
+                    // Password mismatch error
+                    let passwordError = retypeInput.parentElement.querySelector('.error-message');
+                    if (!passwordError) {
+                        passwordError = document.createElement('div');
+                        passwordError.className = 'error-message';
+                        passwordError.style.display = 'none';
+                        retypeInput.insertAdjacentElement('afterend', passwordError);
+                    }
+
+                    const checkPasswordMatch = () => {
+                        if (retypeInput.value && passwordInput.value !== retypeInput.value) {
+                            retypeInput.classList.add('error');
+                            passwordError.textContent = "Passwords do not match";
+                            passwordError.style.display = 'block';
+                        } else {
+                            retypeInput.classList.remove('error');
+                            passwordError.style.display = 'none';
+                        }
+                    };
+
+                    passwordInput.addEventListener('input', checkPasswordMatch);
+                    retypeInput.addEventListener('input', checkPasswordMatch);
+
+                    // Signup submission via AJAX
+                    signupForm.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        checkPasswordMatch();
+                        if (passwordInput.value !== retypeInput.value) return; // Stop if mismatch
+
+
+                        // Validate username
+                        if (!isValidUsername(usernameInput.value)) {
+                            let signupError = signupForm.querySelector('.signup-error-message');
+                            if (!signupError) {
+                                signupError = document.createElement('div');
+                                signupError.className = 'error-message signup-error-message';
+                                signupForm.insertBefore(signupError, signupForm.querySelector('button[type="submit"]'));
+                            }
+                            signupError.textContent = "Invalid username. It must contain at least one letter and cannot be only numbers or symbols.";
+                            signupError.style.display = 'block';
+                            return;
+                        }
+
+
+                        // Remove previous signup error
+                        let prevError = signupForm.querySelector('.signup-error-message');
+                        if (prevError) prevError.remove();
+
+                        // Create new error element
+                        const signupError = document.createElement('div');
+                        signupError.className = 'error-message signup-error-message';
+                        signupError.style.display = 'none';
+                        signupForm.insertBefore(signupError, signupForm.querySelector('button[type="submit"]'));
+
+                        const formData = new FormData(signupForm);
+                        fetch('../backend/sign_up.php', { method: 'POST', body: formData })
+                            .then(res => res.json())
+                            .then(data => {
+                                if (data.status === 'success') {
+                                    window.location.href = '../frontend/dashboard.html';
+                                } else {
+                                    signupError.textContent = data.message;
+                                    signupError.style.display = 'block';
+                                }
+                            })
+                            .catch(err => {
+                                signupError.textContent = "Something went wrong. Try again!";
+                                signupError.style.display = 'block';
+                                console.error(err);
+                            });
+                    });
+                }
+
+                /* ---------------------- LOGIN FORM ---------------------- */
+                const loginForm = document.querySelector('.sign-in-container form');
+                const loginEmail = loginForm.querySelector('input[name="email"]');
+                const loginPassword = loginForm.querySelector('input[name="password"]');
+
+                loginForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    const formData = new FormData(loginForm);
+
+                    fetch('../backend/login.php', { method: 'POST', body: formData })
+                        .then(res => res.json())
+                        .then(data => {
+                            const prevError = loginForm.querySelector('.error-message');
+                            if (prevError) prevError.remove();
+                            loginPassword.classList.remove('error');
+
+                            if (data.success) {
+                                window.location.href = '../backend/' + data.redirect;
+                            } else {
+                                const errorMsg = document.createElement('div');
+                                errorMsg.className = 'error-message';
+                                errorMsg.textContent = data.message;
+                                errorMsg.style.display = 'block';
+                                loginPassword.insertAdjacentElement('afterend', errorMsg);
+                                loginPassword.classList.add('error');
+                            }
+                        })
+                        .catch(err => console.error('Login error:', err));
+                });
+
+                // Remove login error on typing
+                [loginEmail, loginPassword].forEach(input => {
+                    input.addEventListener('input', () => {
+                        const errorMsg = loginForm.querySelector('.error-message');
+                        if (errorMsg) errorMsg.remove();
+                        loginPassword.classList.remove('error');
+                    });
+                });
+            });
+        </script>
+
+
+
+    </body>
+
+</html>

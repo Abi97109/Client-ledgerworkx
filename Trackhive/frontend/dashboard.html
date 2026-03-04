@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrackHive | Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet">
+    <link rel="icon" type="image/png" href="favicon.ico">
+    <style>
+      :root {
+        --primary-color: #243B55;
+        --accent-color: #3b82f6;
+        --accent-light: #60a5fa;
+        --bg-primary: #f7f9fb;
+        --bg-secondary: #ffffff;
+        --text-primary: #1f2937;
+        --text-secondary: #6b7280;
+        --border-color: #e5e7eb;
+        --shadow-light: rgba(0, 0, 0, 0.1);
+        --shadow-medium: rgba(0, 0, 0, 0.15);
+        --success-color: #10b981;
+        --warning-color: #f59e0b;
+        --danger-color: #ef4444;
+      }
+
+      [data-theme="dark"] {
+        --bg-primary: #111827;
+        --bg-secondary: #1f2937;
+        --text-primary: #f9fafb;
+        --text-secondary: #d1d5db;
+        --border-color: #374151;
+        --shadow-light: rgba(0, 0, 0, 0.3);
+        --shadow-medium: rgba(0, 0, 0, 0.4);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+      }
+
+      body {
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        overflow-x: hidden;
+        transition: all 0.3s ease;
+      }
+
+      /* Animated Background */
+      .bg-animation {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+        overflow: hidden;
+      }
+
+      .floating-shape {
+        position: absolute;
+        border-radius: 50%;
+        opacity: 0.1;
+        animation: float 15s infinite ease-in-out;
+      }
+
+      .shape-1 {
+        width: 200px;
+        height: 200px;
+        background: linear-gradient(45deg, var(--accent-color), var(--accent-light));
+        top: 10%;
+        left: 5%;
+        animation-delay: 0s;
+      }
+
+      .shape-2 {
+        width: 150px;
+        height: 150px;
+        background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+        top: 60%;
+        right: 10%;
+        animation-delay: 5s;
+      }
+
+      .shape-3 {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(45deg, var(--accent-light), var(--accent-color));
+        bottom: 20%;
+        left: 15%;
+        animation-delay: 10s;
+      }
+
+      /* Header */
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+        background: var(--bg-secondary);
+        box-shadow: 0 2px 10px var(--shadow-light);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        backdrop-filter: blur(10px);
+        animation: slideDown 0.8s ease-out;
+      }
+
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .logo-img {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        /* optional: keep rounded corners */
+        object-fit: cover;
+        /* makes sure the image fits nicely */
+      }
+
+      .hamburger {
+        width: 40px;
+        height: 40px;
+        border: none;
+        background: none;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        transition: all 0.3s ease;
+        border-radius: 8px;
+        padding: 8px;
+      }
+
+      .hamburger:hover {
+        background: var(--accent-color);
+        transform: scale(1.1);
+      }
+
+      .hamburger span {
+        width: 24px;
+        height: 3px;
+        background: var(--text-primary);
+        border-radius: 2px;
+        transition: all 0.3s ease;
+      }
+
+      .hamburger:hover span {
+        background: white;
+      }
+
+      .hamburger.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+      }
+
+      .hamburger.active span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .hamburger.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -6px);
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        animation: slideInLeft 1s ease-out 0.2s both;
+      }
+
+      .logo-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, var(--accent-color), var(--accent-light));
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        animation: logoGlow 3s ease-in-out infinite;
+      }
+
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        animation: slideInRight 1s ease-out 0.4s both;
+      }
+
+      /* Dark Mode Toggle */
+      .theme-toggle {
+        position: relative;
+        width: 60px;
+        height: 30px;
+        background: var(--border-color);
+        border-radius: 15px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: none;
+        outline: none;
+      }
+
+      .theme-toggle::before {
+        content: '🌙';
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 24px;
+        height: 24px;
+        background: white;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        box-shadow: 0 2px 5px var(--shadow-light);
+      }
+
+      [data-theme="dark"] .theme-toggle {
+        background: var(--accent-color);
+      }
+
+      [data-theme="dark"] .theme-toggle::before {
+        content: '☀';
+        transform: translateX(30px);
+      }
+
+      .logout-btn {
+        padding: 0.5rem 1rem;
+        background: linear-gradient(135deg, var(--danger-color), #dc2626);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+
+      .logout-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
+      }
+
+      /* Sidebar */
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: -300px;
+        width: 300px;
+        height: 100vh;
+        background: var(--bg-secondary);
+        box-shadow: 2px 0 20px var(--shadow-medium);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 200;
+        padding: 2rem 0;
+      }
+
+      .sidebar.active {
+        left: 0;
+      }
+
+      .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 150;
+      }
+
+      .sidebar-overlay.active {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .sidebar-header {
+        padding: 0 2rem 2rem;
+        border-bottom: 1px solid var(--border-color);
+        margin-bottom: 2rem;
+      }
+
+      .sidebar-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .sidebar-menu {
+        list-style: none;
+      }
+
+      .sidebar-item {
+        margin: 0.5rem 0;
+      }
+
+      .sidebar-link {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 2rem;
+        color: var(--text-secondary);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .sidebar-link:hover {
+        background: var(--accent-color);
+        color: white;
+        transform: translateX(10px);
+      }
+
+      .sidebar-link::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 4px;
+        background: var(--accent-color);
+        transform: scaleY(0);
+        transition: transform 0.3s ease;
+      }
+
+      .sidebar-link:hover::before {
+        transform: scaleY(1);
+      }
+
+      /* Main Content */
+      .main-content {
+        padding: 2rem;
+        transition: all 0.3s ease;
+      }
+
+      .welcome-section {
+        text-align: center;
+        margin-bottom: 3rem;
+        animation: fadeInUp 1s ease-out 0.6s both;
+      }
+
+      .welcome-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: textGlow 3s ease-in-out infinite;
+      }
+
+      .welcome-subtitle {
+        font-size: 1.2rem;
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+      }
+
+      .stats-bar {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-top: 1rem;
+      }
+
+      .stat-item {
+        text-align: center;
+        padding: 1rem;
+        background: var(--bg-secondary);
+        border-radius: 12px;
+        box-shadow: 0 4px 15px var(--shadow-light);
+        min-width: 120px;
+        transition: all 0.3s ease;
+      }
+
+      .stat-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px var(--shadow-medium);
+      }
+
+      .stat-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--accent-color);
+      }
+
+      .stat-label {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        margin-top: 0.25rem;
+      }
+
+      /* Classroom Grid */
+      .classrooms-section {
+        margin-top: 3rem;
+      }
+
+      .section-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 2rem;
+        color: var(--text-primary);
+        text-align: center;
+        animation: fadeInUp 1s ease-out 0.8s both;
+      }
+
+      .classrooms-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        animation: fadeInUp 1s ease-out 1s both;
+      }
+
+      .classroom-cube {
+        background: var(--bg-secondary);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 8px 25px var(--shadow-light);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        border: 2px solid transparent;
+      }
+
+      .classroom-cube::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+        transition: left 0.6s ease;
+      }
+
+      .classroom-cube:hover::before {
+        left: 100%;
+      }
+
+      .classroom-cube:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 20px 40px var(--shadow-medium);
+        border-color: var(--accent-color);
+      }
+
+      .classroom-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+      }
+
+      .classroom-name {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .classroom-status {
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .status-available {
+        background: rgba(16, 185, 129, 0.1);
+        color: var(--success-color);
+      }
+
+      .status-occupied {
+        background: rgba(239, 68, 68, 0.1);
+        color: var(--danger-color);
+      }
+
+      .status-partial {
+        background: rgba(245, 158, 11, 0.1);
+        color: var(--warning-color);
+      }
+
+      .classroom-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .info-item {
+        text-align: center;
+      }
+
+      .info-number {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--accent-color);
+      }
+
+      .info-label {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        margin-top: 0.25rem;
+      }
+
+      .occupancy-bar {
+        width: 100%;
+        height: 8px;
+        background: var(--border-color);
+        border-radius: 4px;
+        overflow: hidden;
+        margin-bottom: 1rem;
+      }
+
+      .occupancy-fill {
+        height: 100%;
+        border-radius: 4px;
+        transition: width 0.8s ease;
+        position: relative;
+      }
+
+      .occupancy-fill::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        animation: shimmer 2s infinite;
+      }
+
+      .fill-low {
+        background: linear-gradient(90deg, var(--success-color), #34d399);
+      }
+
+      .fill-medium {
+        background: linear-gradient(90deg, var(--warning-color), #fbbf24);
+      }
+
+      .fill-high {
+        background: linear-gradient(90deg, var(--danger-color), #f87171);
+      }
+
+      .classroom-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+      }
+
+      /* Animations */
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-100%);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideInLeft {
+        from {
+          opacity: 0;
+          transform: translateX(-50px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes slideInRight {
+        from {
+          opacity: 0;
+          transform: translateX(50px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(40px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes float {
+
+        0%,
+        100% {
+          transform: translateY(0) rotate(0deg);
+        }
+
+        33% {
+          transform: translateY(-30px) rotate(120deg);
+        }
+
+        66% {
+          transform: translateY(15px) rotate(240deg);
+        }
+      }
+
+      @keyframes logoGlow {
+
+        0%,
+        100% {
+          box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        }
+
+        50% {
+          box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
+        }
+      }
+
+      @keyframes textGlow {
+
+        0%,
+        100% {
+          filter: brightness(1);
+        }
+
+        50% {
+          filter: brightness(1.2);
+        }
+      }
+
+      @keyframes shimmer {
+        0% {
+          transform: translateX(-100%);
+        }
+
+        100% {
+          transform: translateX(100%);
+        }
+      }
+
+      @keyframes pulse {
+
+        0%,
+        100% {
+          transform: scale(1);
+        }
+
+        50% {
+          transform: scale(1.05);
+        }
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .header {
+          padding: 1rem;
+        }
+
+        .main-content {
+          padding: 1rem;
+        }
+
+        .welcome-title {
+          font-size: 2rem;
+        }
+
+        .stats-bar {
+          flex-direction: column;
+          align-items: center;
+          gap: 1rem;
+        }
+
+        .classrooms-grid {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+
+        .classroom-cube {
+          padding: 1.5rem;
+        }
+      }
+
+      /* Loading Animation */
+      .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid var(--border-color);
+        border-radius: 50%;
+        border-top-color: var(--accent-color);
+        animation: spin 1s ease-in-out infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+      <div class="floating-shape shape-1"></div>
+      <div class="floating-shape shape-2"></div>
+      <div class="floating-shape shape-3"></div>
+    </div>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h3 class="sidebar-title">Menu</h3>
+      </div>
+      <ul class="sidebar-menu">
+        <li class="sidebar-item">
+          <a href="#" class="sidebar-link">
+            <span>📋</span>
+            <span>Dashboard</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item">
+          <a href="#" class="sidebar-link">
+            <span>⚙</span>
+            <span>Settings</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="#" class="sidebar-link">
+            <span>🔔</span>
+            <span>Notifications</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="#" class="sidebar-link">
+            <span>❓</span>
+            <span>Help & Support</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <button class="hamburger" id="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <div class="logo">
+          <img src="./logotrackhive.jpg" alt="TrackHive Logo" class="logo-img">
+          <span>TrackHive</span>
+        </div>
+      </div>
+      <div class="header-right">
+        <button class="theme-toggle" id="themeToggle"></button>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Welcome Section -->
+      <section class="welcome-section">
+        <h1 class="welcome-title" id="welcome-title">Welcome back! 👋</h1>
+        </h1>
+        <p class="welcome-subtitle">Monitor your smart classrooms in real-time</p>
+        <div class="stats-bar">
+          <div class="stat-item">
+            <div class="stat-number">12</div>
+            <div class="stat-label">Total Rooms</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">8</div>
+            <div class="stat-label">Active</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">1</div>
+            <div class="stat-label">Unoccupied</div>
+          </div>
+      </section>
+
+      <!-- Classrooms Section -->
+      <section class="classrooms-section">
+        <h2 class="section-title">Classroom Overview</h2>
+        <div class="classrooms-grid">
+          <!-- Classroom 1 -->
+          <div class="classroom-cube" onclick="openClassroom('room-101')">
+            <div class="classroom-header">
+              <h3 class="classroom-name">Room 101</h3>
+              <span class="classroom-status status-occupied">Occupied</span>
+            </div>
+            <div class="classroom-info">
+              <div class="info-item">
+                <div class="info-number">28</div>
+                <div class="info-label">Current</div>
+              </div>
+              <div class="info-item">
+                <div class="info-number">30</div>
+                <div class="info-label">Capacity</div>
+              </div>
+            </div>
+            <div class="occupancy-bar">
+              <div class="occupancy-fill fill-high" style="width: 93%"></div>
+            </div>
+            <div class="classroom-footer">
+              <span>📚 Mathematics</span>
+              <span>⏰ 09:00 - 10:30</span>
+            </div>
+          </div>
+
+          <!-- Classroom 2 -->
+          <div class="classroom-cube" onclick="openClassroom('room-102')">
+            <div class="classroom-header">
+              <h3 class="classroom-name">Room 102</h3>
+              <span class="classroom-status status-partial">Partial</span>
+            </div>
+            <div class="classroom-info">
+              <div class="info-item">
+                <div class="info-number">15</div>
+                <div class="info-label">Current</div>
+              </div>
+              <div class="info-item">
+                <div class="info-number">25</div>
+                <div class="info-label">Capacity</div>
+              </div>
+            </div>
+            <div class="occupancy-bar">
+              <div class="occupancy-fill fill-medium" style="width: 60%"></div>
+            </div>
+            <div class="classroom-footer">
+              <span>🔬 Physics Lab</span>
+              <span>⏰ 10:45 - 12:15</span>
+            </div>
+          </div>
+
+          <!-- Classroom 3 -->
+          <div class="classroom-cube" onclick="openClassroom('room-103')">
+            <div class="classroom-header">
+              <h3 class="classroom-name">Room 103</h3>
+              <span class="classroom-status status-available">Available</span>
+            </div>
+            <div class="classroom-info">
+              <div class="info-item">
+                <div class="info-number">0</div>
+                <div class="info-label">Current</div>
+              </div>
+              <div class="info-item">
+                <div class="info-number">35</div>
+                <div class="info-label">Capacity</div>
+              </div>
+            </div>
+            <div class="occupancy-bar">
+              <div class="occupancy-fill fill-low" style="width: 0%"></div>
+            </div>
+            <div class="classroom-footer">
+              <span>💻 Computer Lab</span>
+              <span>⏰ Available</span>
+            </div>
+          </div>
+
+          <!-- Classroom 4 -->
+          <div class="classroom-cube" onclick="openClassroom('room-104')">
+            <div class="classroom-header">
+              <h3 class="classroom-name">Room 104</h3>
+              <span class="classroom-status status-occupied">Occupied</span>
+            </div>
+            <div class="classroom-info">
+              <div class="info-item">
+                <div class="info-number">22</div>
+                <div class="info-label">Current</div>
+              </div>
+              <div class="info-item">
+                <div class="info-number">28</div>
+                <div class="info-label">Capacity</div>
+              </div>
+            </div>
+            <div class="occupancy-bar">
+              <div class="occupancy-fill fill-medium" style="width: 79%"></div>
+            </div>
+            <div class="classroom-footer">
+              <span>🎨 Art Studio</span>
+              <span>⏰ 11:00 - 12:30</span>
+            </div>
+          </div>
+
+          <!-- Classroom 5 -->
+          <div class="classroom-cube" onclick="openClassroom('room-105')">
+            <div class="classroom-header">
+              <h3 class="classroom-name">Room 105</h3>
+              <span class="classroom-status status-partial">Partial</span>
+            </div>
+            <div class="classroom-info">
+              <div class="info-item">
+                <div class="info-number">8</div>
+                <div class="info-label">Current</div>
+              </div>
+              <div class="info-item">
+                <div class="info-number">20</div>
+                <div class="info-label">Capacity</div>
+              </div>
+            </div>
+            <div class="occupancy-bar">
+              <div class="occupancy-fill fill-low" style="width: 40%"></div>
+            </div>
+            <div class="classroom-footer">
+              <span>📖 Library</span>
+              <span>⏰ Study Hall</span>
+            </div>
+          </div>
+
+          <!-- Classroom 6 -->
+          <div class="classroom-cube" onclick="openClassroom('room-106')">
+            <div class="classroom-header">
+              <h3 class="classroom-name">Room 106</h3>
+              <span class="classroom-status status-available">Available</span>
+            </div>
+            <div class="classroom-info">
+              <div class="info-item">
+                <div class="info-number">0</div>
+                <div class="info-label">Current</div>
+              </div>
+              <div class="info-item">
+                <div class="info-number">40</div>
+                <div class="info-label">Capacity</div>
+              </div>
+            </div>
+            <div class="occupancy-bar">
+              <div class="occupancy-fill fill-low" style="width: 0%"></div>
+            </div>
+            <div class="classroom-footer">
+              <span>🎭 Auditorium</span>
+              <span>⏰ Available</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      // Theme Toggle
+      const themeToggle = document.getElementById('themeToggle');
+      const body = document.body;
+
+      // Check for saved theme preference or default to light mode
+      const currentTheme = localStorage.getItem('theme') || 'light';
+      body.setAttribute('data-theme', currentTheme);
+
+      themeToggle.addEventListener('click', () => {
+        const theme = body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        body.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+      });
+
+      // Hamburger Menu
+      const hamburger = document.getElementById('hamburger');
+      const sidebar = document.getElementById('sidebar');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+      function toggleSidebar() {
+        hamburger.classList.toggle('active');
+        sidebar.classList.toggle('active');
+        sidebarOverlay.classList.toggle('active');
+      }
+
+      hamburger.addEventListener('click', toggleSidebar);
+      sidebarOverlay.addEventListener('click', toggleSidebar);
+
+      // Close sidebar when clicking on a link
+      document.querySelectorAll('.sidebar-link').forEach(link => {
+        link.addEventListener('click', () => {
+          toggleSidebar();
+        });
+      });
+      //classroom navigation
+      function openClassroom(roomId) {
+        event.currentTarget.style.opacity = '0.7';
+        event.currentTarget.innerHTML += '<div class="loading" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"></div>';
+
+        setTimeout(() => {
+          window.location.href = `classroom.html?room=${roomId}`;
+        }, 800);
+      }
+
+
+      // Logout Function
+      function logout() {
+        if (confirm('Are you sure you want to logout?')) {
+          // Add logout animation
+          document.body.style.opacity = '0';
+          setTimeout(() => {
+            window.location.href = '../backend/logout.php';
+          }, 500);
+        }
+      }
+
+      // Real-time Updates Simulation
+      function updateClassroomData() {
+        const cubes = document.querySelectorAll('.classroom-cube');
+        cubes.forEach(cube => {
+          const occupancyFill = cube.querySelector('.occupancy-fill');
+          const currentNumber = cube.querySelector('.info-number');
+
+          // Simulate small random changes
+          if (Math.random() > 0.8) {
+            const currentValue = parseInt(currentNumber.textContent);
+            const change = Math.floor(Math.random() * 3) - 1; // -1, 0, or 1
+            const newValue = Math.max(0, currentValue + change);
+            const capacity = parseInt(cube.querySelectorAll('.info-number')[1].textContent);
+
+            currentNumber.textContent = newValue;
+            const percentage = (newValue / capacity) * 100;
+            occupancyFill.style.width = percentage + '%';
+
+            // Update status and colors
+            const status = cube.querySelector('.classroom-status');
+            if (percentage === 0) {
+              status.textContent = 'Available';
+              status.className = 'classroom-status status-available';
+              occupancyFill.className = 'occupancy-fill fill-low';
+            } else if (percentage < 70) {
+              status.textContent = 'Partial';
+              status.className = 'classroom-status status-partial';
+              occupancyFill.className = 'occupancy-fill fill-medium';
+            } else {
+              status.textContent = 'Occupied';
+              status.className = 'classroom-status status-occupied';
+              occupancyFill.className = 'occupancy-fill fill-high';
+            }
+          }
+        });
+      }
+
+      // Update data every 10 seconds
+      setInterval(updateClassroomData, 10000);
+
+      // Add entrance animations to classroom cubes
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.animation = 'fadeInUp 0.6s ease-out forwards';
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll('.classroom-cube').forEach(cube => {
+        cube.style.opacity = '0';
+        observer.observe(cube);
+      });
+
+      // Add hover sound effect (optional)
+      document.querySelectorAll('.classroom-cube').forEach(cube => {
+        cube.addEventListener('mouseenter', () => {
+          cube.style.transform = 'translateY(-10px) scale(1.02)';
+        });
+
+        cube.addEventListener('mouseleave', () => {
+          cube.style.transform = 'translateY(0) scale(1)';
+        });
+      });
+
+
+    </script>
+  </body>
+
+</html>c
