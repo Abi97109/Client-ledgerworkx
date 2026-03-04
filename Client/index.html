@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ledger Workx Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="client-css/client-dashboard.css">
+    <link rel="stylesheet" href="client-css/dark-mode.css">
+</head>
+<body data-profile-name="John Doe" data-client-email="accounts@cartertrading.ae" data-client-phone="+971 50 123 4567">
+
+    <header class="navbar">
+        <div class="brand">
+            <a href="index.html" aria-label="Go to Dashboard"><img src="client-assets/logo.png" alt="Ledger Workx logo" class="logo-img"></a>
+        </div>
+
+        <button class="nav-toggle" aria-label="Toggle menu"><i class="fas fa-bars"></i></button>
+
+        <nav class="nav-links">
+            <a href="index.html" class="active">Dashboard</a>
+            <a href="#">My Requests</a>
+            <a href="#">Payments</a>
+            <a href="#">Documents</a>
+            <a href="#">Notifications</a>
+        </nav>
+
+        <div class="profile">
+            <span class="profile-name" id="profileNameBtn">John Doe</span>
+            <img src="https://i.pravatar.cc/40" alt="profile" class="profile-img" id="profileToggle">
+            <i class="fas fa-chevron-down profile-arrow" id="profileArrow"></i>
+            <div class="profile-dropdown" id="profileDropdown">
+                <a href="#"><i class="fas fa-cog"></i> Settings</a>
+                <button class="signout" id="signoutBtn"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="welcome">
+            <h1>Welcome back, John Anderson</h1>
+            <p>Here's what's happening with your account today</p>
+        </section>
+
+        <section class="packages" id="packages">
+            <article class="card" data-plan="Basic">
+                <h3>BASIC</h3>
+                <div class="price">AED 4,500/month</div>
+                <ul>
+                    <li>Up to 2 Services</li>
+                    <li>Essential Reports</li>
+                    <li>Basic Support</li>
+                </ul>
+            </article>
+
+            <article class="card" data-plan="Pro">
+                <h3>PRO</h3>
+                <div class="price">AED 7,500/month</div>
+                <ul>
+                    <li>Up to 5 Services</li>
+                    <li>Advanced Reports</li>
+                    <li>Priority Support</li>
+                </ul>
+            </article>
+
+            <article class="card" data-plan="Ultimate">
+                <h3>ULTIMATE</h3>
+                <div class="price">AED 12,000/month</div>
+                <ul>
+                    <li>Comprehensive Premium Services</li>
+                    <li>Up to 8 Services</li>
+                    <li>Detailed Reports</li>
+                </ul>
+            </article>
+        </section>
+
+        <section class="stats">
+            <a href="#" class="stat-box stat-link">
+                <span class="stat-label">Active Services</span>
+                <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                <h2>8</h2>
+            </a>
+            <a href="#" class="stat-box stat-link">
+                <span class="stat-label">Open Tasks</span>
+                <div class="stat-icon"><i class="fas fa-tasks"></i></div>
+                <h2>3</h2>
+            </a>
+            <a href="#" class="stat-box stat-link">
+                <span class="stat-label">Documents Available</span>
+                <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
+                <h2>24</h2>
+            </a>
+            <div class="stat-box">
+                <span class="stat-label">Payments Due</span>
+                <h2>AED 12,800</h2>
+                <div class="pay-now" style="margin-top: 14px;">
+                    <button class="primary pay-btn" type="button">Pay Now</button>
+                    <button class="secondary" type="button">Download Invoice</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="services-section">
+            <div class="services-header">
+                <h3>Services</h3>
+                <a href="#" class="more-services">More Services <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="services">
+                <a href="#" class="service-box">
+                    <div class="service-left">
+                        <div class="service-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <span>Business Setup & Government</span>
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+                <a href="#" class="service-box">
+                    <div class="service-left">
+                        <div class="service-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <span>Accounting, Finance & CFO</span>
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+                <a href="#" class="service-box">
+                    <div class="service-left">
+                        <div class="service-icon">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </div>
+                        <span>Taxation & Compliance</span>
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+                <a href="#" class="service-box">
+                    <div class="service-left">
+                        <div class="service-icon">
+                            <i class="fas fa-gavel"></i>
+                        </div>
+                        <span>Legal & Secretarial</span>
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+                <a href="#" class="service-box">
+                    <div class="service-left">
+                        <div class="service-icon">
+                            <i class="fas fa-clipboard-check"></i>
+                        </div>
+                        <span>Audit & Documentation</span>
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+                <a href="#" class="service-box">
+                    <div class="service-left">
+                        <div class="service-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <span>Advisory & Strategy</span>
+                    </div>
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </div>
+        </section>
+
+        <div class="bottom-section">
+            <div class="recent">
+                <h3>Recent Activity</h3>
+                <div class="activity-grid">
+                    <div class="activity-tile">
+                        <div class="title">Invoice #2847 Generated</div>
+                        <div class="meta">2 hours ago</div>
+                    </div>
+                    <div class="activity-tile">
+                        <div class="title">Payment Received</div>
+                        <div class="meta">1 day ago</div>
+                    </div>
+                    <div class="activity-tile">
+                        <div class="title">Invoice #2821 Generated</div>
+                        <div class="meta">3 days ago</div>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="side">
+                <h3>Quick Links</h3>
+                <div class="quick-links">
+                    <a href="#">Blog</a>
+                    <a href="#">My Invoices</a>
+                    <a href="#">Support</a>
+                    <a href="#">Profile Settings</a>
+                </div>
+
+                <h3>Latest Notifications</h3>
+                <div class="notifications">
+                    <p>Monthly Report Approved</p>
+                    <p>ID Proof Document Uploaded</p>
+                    <p>New message from Sarah</p>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <script src="client-js/dark-mode.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navToggle = document.querySelector('.nav-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            if (navToggle && navLinks) {
+                navToggle.addEventListener('click', function() {
+                    const visible = navLinks.style.display === 'flex';
+                    navLinks.style.display = visible ? 'none' : 'flex';
+                });
+            }
+
+            const profileToggle = document.getElementById('profileToggle');
+            const profileNameBtn = document.getElementById('profileNameBtn');
+            const profileArrow = document.getElementById('profileArrow');
+            const profileDropdown = document.getElementById('profileDropdown');
+            const profile = document.querySelector('.profile');
+
+            function showProfileDropdown() {
+                if (!profileDropdown) return;
+                profileDropdown.classList.add('active');
+                if (profileArrow) profileArrow.classList.add('rotate');
+            }
+
+            function hideProfileDropdown() {
+                if (!profileDropdown) return;
+                profileDropdown.classList.remove('active');
+                if (profileArrow) profileArrow.classList.remove('rotate');
+            }
+
+            function toggleProfileDropdown(e) {
+                e.stopPropagation();
+                if (!profileDropdown) return;
+                const isOpen = profileDropdown.classList.contains('active');
+                if (isOpen) hideProfileDropdown();
+                else showProfileDropdown();
+            }
+
+            if (profileToggle) profileToggle.addEventListener('click', toggleProfileDropdown);
+            if (profileNameBtn) profileNameBtn.addEventListener('click', toggleProfileDropdown);
+            if (profileArrow) profileArrow.addEventListener('click', toggleProfileDropdown);
+
+            document.addEventListener('click', function(e) {
+                if (profile && !profile.contains(e.target)) hideProfileDropdown();
+            });
+
+            const signoutBtn = document.getElementById('signoutBtn');
+            if (signoutBtn) {
+                signoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    hideProfileDropdown();
+                });
+            }
+        });
+    </script>
+</body>
+</html>
